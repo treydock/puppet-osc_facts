@@ -1,0 +1,133 @@
+example_hosts:
+  rw01:
+    domain: example.com
+    extra:
+      hw_type: VM
+      partition_schema: rw
+      rw_type: prod
+      type: rw
+    hostgroup: base/example/rw
+    interfaces_attributes:
+    - identifier: eth0
+      ip: 10.2.0.1
+      mac: 00:00:00:00:00:01
+      name: rw01
+      subnet: 10.2/16
+      type: interface
+    ip: 10.2.0.1
+    mac: 00:00:00:00:00:01
+    name: rw01
+  compute01:
+    data:
+      node_attributes:
+      - pfsdir
+    domain: example.com
+    extra:
+      cpus: 28
+      eth_switch: switch01
+      hw_type: c6320
+      ib_switch: ib-switch01
+      serial: XXXXXX
+      type: compute
+    hostgroup: base/example/compute
+    interfaces_attributes:
+    - identifier: eth0
+      ip: 10.2.1.1
+      mac: 00:00:00:00:00:02
+      name: compute01
+      subnet: 10.2/16
+      type: interface
+    - ip: 10.1.1.1
+      mac: 00:00:00:00:00:03
+      name: bmc-compute01
+      subnet: 10.1/16
+      type: bmc
+    - identifier: ib0
+      ip: 10.0.0.1
+      mac: a0:00:00:27:fe:80:00:00:00:00:00:00:00:00:00:00:00:00:00:02
+      name: ib-compute01
+      subnet: 10.0/16
+      type: interface
+    ip: 10.2.1.1
+    location:
+      chassis: 1
+      position: BACK_RIGHT
+      rack: 1
+      sled: 1
+      u: 2
+    mac: 00:00:00:00:00:02
+    name: compute01
+  compute02:
+    data:
+      node_attributes:
+      - vis
+      - pfsdir
+    domain: example.com
+    extra:
+      compute_type: gpu
+      cpus: 28
+      eth_switch: switch01
+      gpu_type: p100
+      gpus: 1
+      hw_type: r730
+      ib_switch: ib-switch01
+      serial: XXXXXX
+      type: compute
+    hostgroup: base/example/compute
+    interfaces_attributes:
+    - identifier: eth0
+      ip: 10.2.1.2
+      mac: 00:00:00:00:00:04
+      name: compute02
+      subnet: 10.2/16
+      type: interface
+    - ip: 10.1.1.2
+      mac: 00:00:00:00:00:05
+      name: bmc-compute02
+      subnet: 10.1/16
+      type: bmc
+    - identifier: ib0
+      ip: 10.0.0.2
+      mac: a0:00:00:27:fe:80:00:00:00:00:00:00:00:00:00:00:00:00:00:03
+      name: ib-compute02
+      subnet: 10.0/16
+      type: interface
+    ip: 10.2.1.2
+    location:
+      rack: 19
+      u: 7
+    mac: 00:00:00:00:00:04
+    name: compute02
+  login01:
+    domain: example.com
+    extra:
+      eth_switch: switch01
+      hw_type: r630
+      ib_switch: ib-switch01
+      serial: XXXXXX
+      type: login
+    hostgroup: base/example/login
+    interfaces_attributes:
+    - identifier: eth0
+      ip: 10.3.0.1
+      mac: 00:00:00:00:00:06
+      name: login01
+      subnet: 10.3/16
+      type: interface
+    - ip: 10.1.0.2
+      mac: 00:00:00:00:00:07
+      name: bmc-login01
+      subnet: 10.1/16
+      type: bmc
+    - identifier: ib0
+      ip: 10.0.0.3
+      mac: a0:00:00:27:fe:80:00:00:00:00:00:00:00:00:00:00:00:00:00:04
+      name: ib-login01
+      subnet: 10.0/16
+      type: interface
+    ip: 10.3.0.1
+    location:
+      rack: 18
+      u: 17
+    mac: 00:00:00:00:00:06
+    name: login01
