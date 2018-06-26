@@ -10,7 +10,7 @@ import re
 import sys
 import os
 
-DATA_DIR = '/usr/local/etc'
+DATA_DIR = '/opt/osc/etc'
 DATA_GLOB = '*_hosts.cpickle'
 CLUSTER_RE = '(.*)_hosts.cpickle'
 
@@ -84,12 +84,20 @@ def main():
         logger.debug("Hostname could not be determined")
         sys.exit(0)
     host_data = data[args.host]
-    values = {}
+    values = {
+        'osc_partition_schema': 'default'
+    }
     if 'extra' in host_data:
         if 'partition_schema' in host_data['extra']:
             values['osc_partition_schema'] = host_data['extra']['partition_schema']
         if 'type' in host_data['extra']:
             values['osc_host_type'] = host_data['extra']['type']
+            if values['osc_host_type'] == 'rw' and 'rw_type' in host_data['extra']:
+                values['osc_rw_type'] = host_data['extra']['rw_type']
+        if 'compute_type' in host_data['extra']:
+            values['osc_compute_type'] = host_data['extra']['compute_type']
+            if values['osc_compute_type'] == 'gpu' and 'gpu_type' in host_data['extra']:
+                values['osc_gpu_type'] = host_data['extra']['gpu_type']
     if 'location' in host_data:
         values['osc_location'] = host_data['location']
     if values:

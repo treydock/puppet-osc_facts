@@ -1,3 +1,6 @@
+RSpec.configure do |config|
+  config.mock_with :rspec
+end
 require 'puppetlabs_spec_helper/module_spec_helper'
 
 dir = File.expand_path(File.dirname(__FILE__))
@@ -17,12 +20,12 @@ rescue Exception => e
 end
 
 RSpec.configure do |config|
-  config.mock_with :mocha
+  config.mock_with :rspec
 
   config.before :each do
     # Ensure that we don't accidentally cache facts and environment
     # between test cases.
-    Facter::Util::Loader.any_instance.stubs(:load_all)
+    allow_any_instance_of(Facter::Util::Loader).to receive(:load_all)
     Facter.clear
     Facter.clear_messages
 

@@ -7,10 +7,10 @@ describe 'hostgroup Fact' do
 
   context 'compute node' do
     before :each do
-      Facter.stubs(:value).with(:cluster).returns("example")
-      Facter.stubs(:value).with(:hostname).returns('compute01')
-      Facter.stubs(:value).with(:nfsroot).returns(true)
-      Facter::Util::Osc.stubs(:load_data).with("example").returns(YAML.load(example_fixtures))
+      allow(Facter).to receive(:value).with(:cluster).and_return('example')
+      allow(Facter).to receive(:value).with(:hostname).and_return('compute01')
+      allow(Facter).to receive(:value).with(:nfsroot).and_return(true)
+      allow(Facter::Util::Osc).to receive(:load_data).with('example').and_return(YAML.load(example_fixtures))
     end
 
     it "should return base/example/compute" do
@@ -20,10 +20,10 @@ describe 'hostgroup Fact' do
 
   context 'login nodes' do
     before do
-      Facter.stubs(:value).with(:cluster).returns("example")
-      Facter.stubs(:value).with(:hostname).returns('login01')
-      Facter.stubs(:value).with(:nfsroot).returns(true)
-      Facter::Util::Osc.stubs(:load_data).with("example").returns(YAML.load(example_fixtures))
+      allow(Facter).to receive(:value).with(:cluster).and_return('example')
+      allow(Facter).to receive(:value).with(:hostname).and_return('login01')
+      allow(Facter).to receive(:value).with(:nfsroot).and_return(true)
+      allow(Facter::Util::Osc).to receive(:load_data).with('example').and_return(YAML.load(example_fixtures))
     end
 
     it "should return base/example/login" do
@@ -33,12 +33,12 @@ describe 'hostgroup Fact' do
 
   context 'non-nfsroot system' do
     before do
-      Facter.stubs(:value).with(:nfsroot).returns(false)
+      allow(Facter).to receive(:value).with(:nfsroot).and_return(false)
     end
 
     it 'should return base' do
-      File.stubs(:exists?).with('/etc/facter/facts.d/facts.txt').returns(true)
-      File.stubs(:read).with('/etc/facter/facts.d/facts.txt').returns("hostgroup=base\nrandomfact=value")
+      allow(File).to receive(:exists?).with('/etc/facter/facts.d/facts.txt').and_return(true)
+      allow(File).to receive(:read).with('/etc/facter/facts.d/facts.txt').and_return("hostgroup=base\nrandomfact=value")
       expect(Facter.fact(:hostgroup).value).to eq('base')
     end
   end

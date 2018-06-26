@@ -3,6 +3,10 @@ require 'yaml'
 class Facter::Util::Osc
   CPU_MATCHERS = [
     {
+      :codename => 'skylake',
+      :match    => /Xeon.*Gold (5|6)[0-9]{3}/,
+    },
+    {
       :codename => 'broadwell',
       :match    => /Xeon.*E(3|5|7)-[0-9]{4} v4/,
     },
@@ -64,7 +68,7 @@ class Facter::Util::Osc
     CPU_MATCHERS.each do |matcher|
       match = cpu.match(matcher[:match])
       if match
-        codename = matcher[:codename]
+        return matcher[:codename]
       end
     end
 

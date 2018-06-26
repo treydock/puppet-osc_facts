@@ -7,10 +7,10 @@ describe 'ipoib_address_ib0 Fact' do
 
   context 'compute node' do
     before :each do
-      Facter.fact(:nfsroot).stubs(:value).returns(true)
-      Facter.stubs(:value).with(:cluster).returns("example")
-      Facter.stubs(:value).with(:hostname).returns('compute01')
-      Facter::Util::Osc.stubs(:load_data).with("example").returns(YAML.load(example_fixtures))
+      allow(Facter.fact(:nfsroot)).to receive(:value).and_return(true)
+      allow(Facter).to receive(:value).with(:cluster).and_return('example')
+      allow(Facter).to receive(:value).with(:hostname).and_return('compute01')
+      allow(Facter::Util::Osc).to receive(:load_data).with('example').and_return(YAML.load(example_fixtures))
       Facter.collection.internal_loader.load(:ipoib_address) # Needed to load file with name that does not match fact
     end
 
@@ -21,10 +21,10 @@ describe 'ipoib_address_ib0 Fact' do
 
   context 'login nodes' do
     before do
-      Facter.stubs(:value).with(:cluster).returns("example")
-      Facter.stubs(:value).with(:hostname).returns('login01')
-      Facter.fact(:nfsroot).stubs(:value).returns(true)
-      Facter::Util::Osc.stubs(:load_data).with("example").returns(YAML.load(example_fixtures))
+      allow(Facter).to receive(:value).with(:cluster).and_return('example')
+      allow(Facter).to receive(:value).with(:hostname).and_return('login01')
+      allow(Facter.fact(:nfsroot)).to receive(:value).and_return(true)
+      allow(Facter::Util::Osc).to receive(:load_data).with('example').and_return(YAML.load(example_fixtures))
       Facter.collection.internal_loader.load(:ipoib_address) # Needed to load file with name that does not match fact
     end
 

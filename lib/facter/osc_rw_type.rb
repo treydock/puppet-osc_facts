@@ -4,12 +4,12 @@ require 'facter/util/osc'
 require 'yaml'
 
 Facter.add('osc_rw_type') do
-  #confine :osc_host_type => 'rw'
+  confine :osc_host_type => 'rw'
 
   setcode do
     value = 'none'
     cluster = Facter.value(:cluster)
-    if cluster.nil? or Facter.value(:osc_host_type) != 'rw'
+    if cluster.nil?
       host_data = nil
     else
       host_data = Facter::Util::Osc.get_cluster_host_data(cluster)

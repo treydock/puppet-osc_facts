@@ -5,10 +5,10 @@ describe 'osc_location Fact' do
   context 'example nodes' do
     before :each do
       Facter.clear
-      Facter.fact(:nfsroot).stubs(:value).returns(true)
-      Facter.stubs(:value).with(:hostname).returns("compute01")
-      Facter.stubs(:value).with(:cluster).returns("example")
-      Facter::Util::Osc.stubs(:load_data).with("example").returns(YAML.load(example_fixtures))
+      allow(Facter.fact(:nfsroot)).to receive(:value).and_return(true)
+      allow(Facter).to receive(:value).with(:hostname).and_return('compute01')
+      allow(Facter).to receive(:value).with(:cluster).and_return('example')
+      allow(Facter::Util::Osc).to receive(:load_data).with('example').and_return(YAML.load(example_fixtures))
     end
 
     it "should return location hash" do

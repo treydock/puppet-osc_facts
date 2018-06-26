@@ -1,32 +1,30 @@
 require 'spec_helper'
 
-
 describe 'rhsm_release Fact' do
   before :each do
-    Facter.fact(:operatingsystem).stubs(:value).returns('RedHat')
+    Facter.clear
+    allow(Facter.fact(:operatingsystem)).to receive(:value).and_return('RedHat')
+    allow(Facter.fact(:nfsroot_ro)).to receive(:value).and_return(false)
   end
 
   it 'returns unset when release not set' do
-    Facter.fact(:nfsroot_ro).stubs(:value).returns(false)
-    Facter::Util::Resolution.expects(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').returns('Release not set')
+    allow(Facter::Util::Resolution).to receive(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').and_return('Release not set')
     expect(Facter.fact(:rhsm_release).value).to eq('unset')
   end
 
   it 'returns 7.2' do
-    Facter.fact(:nfsroot_ro).stubs(:value).returns(false)
-    Facter::Util::Resolution.expects(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').returns('Release: 7.2')
+    allow(Facter::Util::Resolution).to receive(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').and_return('Release: 7.2')
     expect(Facter.fact(:rhsm_release).value).to eq('7.2')
   end
 
   it 'returns 7Server' do
-    Facter.fact(:nfsroot_ro).stubs(:value).returns(false)
-    Facter::Util::Resolution.expects(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').returns('Release: 7Server')
+    allow(Facter::Util::Resolution).to receive(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').and_return('Release: 7Server')
     expect(Facter.fact(:rhsm_release).value).to eq('7Server')
   end
 
   it 'returns nil' do
-    Facter.fact(:nfsroot_ro).stubs(:value).returns(true)
-    Facter::Util::Resolution.expects(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null').never
+    allow(Facter.fact(:nfsroot_ro)).to receive(:value).and_return(true)
+    expect(Facter::Util::Resolution).not_to receive(:exec).with('/usr/sbin/subscription-manager release --show 2>/dev/null')
     expect(Facter.fact(:rhsm_release).value).to be_nil
   end
 end

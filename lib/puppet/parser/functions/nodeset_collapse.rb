@@ -102,6 +102,7 @@ module Puppet::Parser::Functions
       end
       str_nodes.each_with_index do |node, i|
         common_uniq = node.gsub(c, '').gsub(s, '')
+        puts "node=#{node} common_uniq=#{common_uniq}" if debug
         # Handle case where there is a non-numeric suffix that is not a common suffix
         if common_uniq !~ /^[0-9]+$/
           exceptions << node
@@ -118,12 +119,20 @@ module Puppet::Parser::Functions
       end
     end
     puts "common=#{common}" if debug
+    puts "exceptions=#{exceptions}" if debug
+    puts "common_all=#{common_all}" if debug
 
     # For each common prefix group, get ranges and format return value
     common.each_pair do |c, d|
       n = d['node']
       if n.size == 1
-        common_all << n[0]
+        if n[0] != c
+          node = c + n[0]
+        else
+          node = n[0]
+        end
+        puts "n.size=1 node=#{node}" if debug
+        common_all << node unless common_all.include?(node)
         next
       end
       ranges = self.to_ranges(n)
